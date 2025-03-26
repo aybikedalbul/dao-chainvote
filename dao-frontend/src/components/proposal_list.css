@@ -1,0 +1,111 @@
+.proposal-container {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    max-width: 500px;
+    margin: 2rem auto;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease;
+}
+
+.proposal-container:hover {
+    transform: translateY(-2px);
+}
+h2 {
+    color: #333;
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background: white;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+li:hover {
+    background: #f0f0f0;
+    cursor: pointer;
+}
+
+li:active {
+    background: #e0e0e0;
+}
+
+.proposal-container {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    max-width: 500px;
+
+} 
+
+.proposal-container:hover {
+    transform: translateY(-2px);
+}
+
+.proposal-container:active {
+    transform: translateY(0);
+}
+
+.proposal-container:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}
+
+/* Modern styling enhancements */
+.proposal-container {
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+li {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-left: 4px solid transparent;
+}
+
+li:hover {
+    transform: translateX(5px);
+    border-left: 4px solid #4299e1;
+    box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);
+}
+
+h2 {
+    font-weight: 600;
+    background: linear-gradient(45deg, #2d3748, #4a5568);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    .proposal-container {
+        background-color: rgba(26, 32, 44, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    li {
+        background: rgba(45, 55, 72, 0.5);
+        color: #e2e8f0;
+    }
+    
+    li:hover {
+        background: rgba(45, 55, 72, 0.8);
+    }
+    
+    h2 {
+        background: linear-gradient(45deg, #90cdf4, #4299e1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
+
