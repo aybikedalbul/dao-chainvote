@@ -1,45 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 
 const WalletConnect = () => {
-    //  keeps the ethereum address
-    const [walletAddress, setWalletAddress] = useState("");
+  const [walletAddress, setWalletAddress] = useState("");
+  const [error, setError] = useState(null);
 
-    // Connecting the user's wallet
-    const connectWallet = async () => {
-        if (window.ethereum) { // Check if MetaMask is available in the user's browser
-            try {
-                // Create Ethereum provider (MetaMask)
-                const provider = new ethers.providers.Web3Provider(window.ethereum);
-                
-                //Permission from user (to open MetaMask)
-                await provider.send("eth_requestAccounts", []);
-                
-                // Get user info
-                const signer = provider.getSigner();
-                
-                // Get Wallet address
-                const address = await signer.getAddress();
-                
-                setWalletAddress(address);
-                console.log("Connected wallet:", address);
-            } catch (err) {
-                console.error("Wallet connection failed:", err);
-            }
-        } else {
-            alert("Please install MetaMask!");
+  // Cüzdan daha önce bağlandıysa otomatik olarak al
+  useEffect(() => {
+    const checkConnection = async () => {
+      if (window.ethereum) {
+        try {
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const accounts = await provider.listAccounts();
+          if (accounts.length > 0) {
+            setWalletAddress(accounts[0]);
+            console.log("Wallet already connected:", accounts[0]);
+          }
+        } catch (err) {
+          console.error("Bağlı cüzdan alınamadı:", err);
         }
+      }
     };
+    checkConnection();
+  }, []);
 
-    return (
-        <div>
-            {walletAddress ? (
-                <p>Connected wallet: {walletAddress}</p>
-            ) : (
-                <button onClick={connectWallet}>Connect Wallet</button>
-            )}
-        </div>
-    );
+  const connectWallet = async () => {
+    if (window.ethereum) {
+      try {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+        const address = await signer.getAddress();
+
+        setWalletAddress(address);
+        setError(null);
+        console.log("Connected wallet:", address);
+      } catch (err) {
+        setError("Cüzdan bağlantısı reddedildi veya başarısız.");
+        console.error("Wallet connection failed:", err);
+      }
+    } else {
+      setError("Lütfen MetaMask yükleyin.");
+    }
+  };
+
+  return (
+    <div style={{ margin: "1rem", textAlign: "center" }}>
+      {walletAddress ? (
+        <p style={{ color: "green" }}>
+          ✅ Cüzdan Bağlandı: <strong>{walletAddress}</strong>
+        </p>
+      ) : (
+        <button onClick={connectWallet}>💳 Cüzdanı Bağla</button>
+      )}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+    </div>
+  );
 };
 
 export default WalletConnect;
