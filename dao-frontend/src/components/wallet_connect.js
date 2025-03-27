@@ -3,57 +3,74 @@ import { ethers } from 'ethers';
 
 const WalletConnect = () => {
   const [walletAddress, setWalletAddress] = useState("");
-  const [error, setError] = useState(null);
 
-  // Cüzdan daha önce bağlandıysa otomatik olarak al
   useEffect(() => {
-    const checkConnection = async () => {
+    const checkWallet = async () => {
       if (window.ethereum) {
-        try {
-          const provider = new ethers.providers.Web3Provider(window.ethereum);
-          const accounts = await provider.listAccounts();
-          if (accounts.length > 0) {
-            setWalletAddress(accounts[0]);
-            console.log("Wallet already connected:", accounts[0]);
-          }
-        } catch (err) {
-          console.error("Bağlı cüzdan alınamadı:", err);
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const accounts = await provider.listAccounts();
+        if (accounts.length > 0) {
+          setWalletAddress(accounts[0]);
         }
       }
     };
-    checkConnection();
+    checkWallet();
   }, []);
 
   const connectWallet = async () => {
-    if (window.ethereum) {
-      try {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        await provider.send("eth_requestAccounts", []);
-        const signer = provider.getSigner();
-        const address = await signer.getAddress();
-
-        setWalletAddress(address);
-        setError(null);
-        console.log("Connected wallet:", address);
-      } catch (err) {
-        setError("Cüzdan bağlantısı reddedildi veya başarısız.");
-        console.error("Wallet connection failed:", err);
+    try {
+      if (!window.ethereum) {
+        alert("Please install MetaMask to use this app.");
+        return;
       }
-    } else {
-      setError("Lütfen MetaMask yükleyin.");
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const accounts = await provider.send("eth_requestAccounts", []);
+      setWalletAddress(accounts[0]);
+    } catch (err) {
+      console.error("Wallet connection failed:", err);
     }
   };
 
   return (
-    <div style={{ margin: "1rem", textAlign: "center" }}>
+    <div
+      className="text-center p-3 rounded shadow"
+      style={{
+        background: "linear-gradient(135deg, #1e3a8a, #0f172a)",
+        color: "#fff",
+        fontWeight: "500",
+        border: "1px solid rgba(99, 179, 237, 0.3)",
+        boxShadow: "0 0 10px rgba(99, 179, 237, 0.2)",
+        animation: "fade-in 1s ease"
+      }}
+    >
       {walletAddress ? (
-        <p style={{ color: "green" }}>
-          ✅ Cüzdan Bağlandı: <strong>{walletAddress}</strong>
-        </p>
+        <span>
+          ✅ <strong>The wallet was connected:</strong>{" "}
+          <span style={{ color: "#00FF00" }}>{walletAddress}</span>
+        </span>
       ) : (
-        <button onClick={connectWallet}>💳 Cüzdanı Bağla</button>
+        <button
+          className="btn btn-primary"
+          onClick={connectWallet}
+          style={{
+            padding: "0.5rem 1rem",
+            borderRadius: "8px",
+            fontWeight: "600",
+            background: "#4299e1",
+            border: "none",
+            boxShadow: "0 4px 10px rgba(66, 153, 225, 0.4)",
+            transition: "transform 0.3s ease"
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.transform = "scale(1.05)";
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.transform = "scale(1)";
+          }}
+        >
+          Connect Wallet
+        </button>
       )}
-      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 };

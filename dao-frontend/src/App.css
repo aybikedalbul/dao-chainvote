@@ -1,38 +1,76 @@
-.App {
-  text-align: center;
+.app-background {
+  min-height: 100vh;
+  background: linear-gradient(165deg, 
+    #0f1539 0%,
+    #1a237e 20%,
+    #3949ab 40%,
+    #1565c0 60%,
+    #0288d1 80%,
+    #00bcd4 100%
+  );
+  position: relative;
+  padding-top: 20px;
+  overflow: hidden;
 }
 
-.App-logo {
-  height: 40vmin;
+.app-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(
+      circle at 10% 90%,
+      rgba(101, 255, 206, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(78, 99, 255, 0.15) 0%,
+      transparent 50%
+    ),
+    linear-gradient(
+      rgba(30, 41, 59, 0.2) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(30, 41, 59, 0.2) 1px, 
+      transparent 1px
+    );
+  background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.app-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at center,
+    transparent 0%,
+    rgba(15, 23, 42, 0.3) 100%
+  );
+  pointer-events: none;
+}
+
+@keyframes fadeIn {
+  0% { 
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+    filter: blur(8px);
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  50% {
+    filter: blur(4px);
   }
-  to {
-    transform: rotate(360deg);
+  100% { 
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
   }
 }
